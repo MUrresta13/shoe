@@ -3,7 +3,6 @@
    - Player must press/hold within START, stay inside stroke, and reach END
    - Leaving stroke or lifting finger resets progress
 */
-
 (() => {
   const canvas = document.getElementById('maze');
   const ctx = canvas.getContext('2d', { alpha: true });
@@ -42,26 +41,25 @@
 
     const w = Math.floor(cssWidth * DPR);
     const h = Math.floor(cssHeight * DPR);
-
     if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w;
-      canvas.height = h;
+      canvas.width = w; canvas.height = h;
     }
-
     scaleX = canvas.width;
     scaleY = canvas.height;
     strokePx = Math.max(18 * DPR, laneWidth * DPR);
 
-    buildPath(); // rebuild at new scale
+    buildPath();
     draw();
   }
 
   const corridor = new Path2D();
   function buildPath() {
-    corridor.currentPath = null; // reset
-    corridor.moveTo(...toPix(points[0]));
+    // rebuild the path at current scale
+    const [x0, y0] = toPix(points[0]);
+    corridor.moveTo(x0, y0);
     for (let i = 1; i < points.length; i++) {
-      corridor.lineTo(...toPix(points[i]));
+      const [x, y] = toPix(points[i]);
+      corridor.lineTo(x, y);
     }
   }
 
@@ -70,14 +68,11 @@
 
   function drawBackground() {
     const g = ctx.createLinearGradient(0, 0, 0, canvas.height);
-    g.addColorStop(0, '#0a0e14');
-    g.addColorStop(1, '#0a0c11');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    g.addColorStop(0, '#0a0e14'); g.addColorStop(1, '#0a0c11');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, canvas.width, canvas.height);
 
     ctx.save();
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.strokeStyle = '#0e1a1f';
     ctx.lineWidth = strokePx + 14 * DPR;
     ctx.globalAlpha = 0.9;
@@ -87,8 +82,7 @@
 
   function drawCorridor() {
     ctx.save();
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     ctx.shadowColor = 'rgba(112, 240, 255, 0.6)';
     ctx.shadowBlur = 18 * DPR;
     ctx.strokeStyle = '#70f0ff';
@@ -107,7 +101,6 @@
     const [ex, ey] = nToPix(endPos.x, endPos.y);
     const sr = startPos.r * DPR;
     const er = endPos.r * DPR;
-
     circle(sx, sy, sr, '#39d98a', 'START');
     circle(ex, ey, er, '#ffae00', 'END');
   }
@@ -118,26 +111,21 @@
     ctx.fillStyle = '#0b0f15';
     ctx.strokeStyle = color;
     ctx.lineWidth = Math.max(3, 3 * DPR);
-    ctx.shadowColor = color;
-    ctx.shadowBlur = 14 * DPR;
+    ctx.shadowColor = color; ctx.shadowBlur = 14 * DPR;
     ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
+    ctx.fill(); ctx.stroke();
     ctx.shadowBlur = 0;
     ctx.fillStyle = '#cfd7e6';
     ctx.font = `${Math.max(12, 12*DPR)}px Inter, sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(label, x, y);
     ctx.restore();
   }
 
   function drawTrail() {
     ctx.save();
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.strokeStyle = '#a6ffbc';
-    ctx.globalAlpha = 0.85;
+    ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+    ctx.strokeStyle = '#a6ffbc'; ctx.globalAlpha = 0.85;
     ctx.lineWidth = Math.max(4, 4 * DPR);
     ctx.beginPath();
     for (let i = 0; i < trail.length; i++) {
@@ -165,9 +153,7 @@
 
   function reset(hard = false) {
     if (hard) trail = [];
-    playing = false;
-    startedInside = false;
-    reachedEnd = false;
+    playing = false; startedInside = false; reachedEnd = false;
     statusEl.textContent = 'Reset. Hold to start inside the START circle.';
     draw();
   }
@@ -176,10 +162,7 @@
     const rect = canvas.getBoundingClientRect();
     const clientX = (evt.touches?.[0]?.clientX ?? evt.clientX);
     const clientY = (evt.touches?.[0]?.clientY ?? evt.clientY);
-    return {
-      x: (clientX - rect.left) * DPR,
-      y: (clientY - rect.top) * DPR
-    };
+    return { x: (clientX - rect.left) * DPR, y: (clientY - rect.top) * DPR };
   }
 
   function insideStart(p) {
@@ -197,8 +180,7 @@
   }
 
   function insideLane(p) {
-    ctx.save();
-    ctx.lineWidth = strokePx;
+    ctx.save(); ctx.lineWidth = strokePx;
     const ok = ctx.isPointInStroke(corridor, p.x, p.y);
     ctx.restore();
     return ok;
@@ -209,8 +191,7 @@
       flashStatus('Touch & hold inside the START circle to begin.', 'warn');
       return;
     }
-    playing = true;
-    startedInside = true;
+    playing = true; startedInside = true;
     trail = [p];
     statusEl.textContent = 'Go! Stay inside the lane…';
     draw();
@@ -220,15 +201,11 @@
     if (!playing) return;
     if (!insideLane(p)) {
       flashStatus('❌ Oops—left the lane. Try again.', 'bad');
-      reset();
-      return;
+      reset(); return;
     }
-    trail.push(p);
-    draw();
-
+    trail.push(p); draw();
     if (insideEnd(p)) {
-      reachedEnd = true;
-      playing = false;
+      reachedEnd = true; playing = false;
       statusEl.textContent = 'Solved!';
       openSuccess();
     }
@@ -251,18 +228,14 @@
 
   function openSuccess() {
     document.getElementById('codeBox').textContent = CODE;
-    if (typeof successDlg.showModal === 'function') {
-      successDlg.showModal();
-    } else {
-      alert(`Passcode: ${CODE}`);
-    }
+    if (typeof successDlg.showModal === 'function') successDlg.showModal();
+    else alert(`Passcode: ${CODE}`);
   }
 
   // Controls
   startBtn.addEventListener('pointerdown', () => {
     flashStatus('Press & hold on the START circle in the maze.', 'info');
   });
-
   resetBtn.addEventListener('click', () => reset(true));
   closeBtn.addEventListener('click', () => successDlg.close());
   copyBtn.addEventListener('click', async () => {
@@ -274,10 +247,8 @@
       const sel = window.getSelection();
       const range = document.createRange();
       range.selectNodeContents(document.getElementById('codeBox'));
-      sel.removeAllRanges();
-      sel.addRange(range);
-      document.execCommand('copy');
-      sel.removeAllRanges();
+      sel.removeAllRanges(); sel.addRange(range);
+      document.execCommand('copy'); sel.removeAllRanges();
       copyBtn.textContent = 'Copied!';
       setTimeout(() => (copyBtn.textContent = 'Copy code'), 1000);
     }
@@ -296,7 +267,6 @@
   );
 
   // Init
-  buildPath();
   const ro = new ResizeObserver(resizeCanvas);
   ro.observe(canvas);
   resizeCanvas();
