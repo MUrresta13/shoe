@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shoe — Finger Maze</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="wrap">
+    <h1>🕸️ Finger Maze</h1>
+    <p class="sub">Trace the glowing path from <strong>START</strong> to <strong>END</strong> without leaving the lane. Lift your finger or touch the walls and you’ll have to start over.</p>
+
+    <div class="board">
+      <canvas id="maze" width="900" height="600" aria-label="Finger maze canvas"></canvas>
+
+      <div class="hud">
+        <button id="startBtn" class="btn primary">Hold to Start</button>
+        <button id="resetBtn" class="btn" aria-label="Reset">Reset</button>
+        <div id="status" role="status" aria-live="polite">Not started</div>
+      </div>
+    </div>
+
+    <details class="help">
+      <summary>How it works / tips</summary>
+      <ul>
+        <li>Press and hold on the <strong>START</strong> circle to begin.</li>
+        <li>Keep your finger inside the glowing lane. If you leave it (or lift up), it resets.</li>
+        <li>Reach the <strong>END</strong> circle to reveal the passcode.</li>
+      </ul>
+    </details>
+  </main>
+
+  <dialog id="successDlg">
+    <h2>Nice! You solved it 🎉</h2>
+    <p class="code-line">Passcode for Clue 1:</p>
+    <div class="code-box" id="codeBox">THIRTEENWHISPERS</div>
+    <div class="dlg-actions">
+      <button class="btn" id="copyBtn">Copy code</button>
+      <button class="btn primary" id="closeBtn">Close</button>
+    </div>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>

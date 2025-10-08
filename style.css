@@ -1,0 +1,39 @@
+:root{
+  --bg:#0b0b10;
+  --panel:#13131a;
+  --ink:#e7e7f0;
+  --muted:#9aa0ad;
+  --accent:#ff6b00;
+  --lane:#70f0ff;
+  --lane-dim:#1b2b30;
+  --good:#39d98a;
+  --bad:#ff4d4f;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 1200px at 10% -10%, #18202a 0%, transparent 60%),
+    radial-gradient(800px 800px at 110% 10%, #1b1426 0%, transparent 60%),
+    var(--bg);
+}
+.wrap{max-width:920px;margin:40px auto;padding:0 16px 48px;}
+h1{margin:8px 0 6px;font-weight:800;letter-spacing:0.2px}
+.sub{margin:0 0 16px;color:var(--muted)}
+.board{background:linear-gradient(180deg,#0e0f14,#0c0d12);border:1px solid #202431;border-radius:16px;padding:14px;box-shadow:0 10px 40px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,.03);}
+canvas{width:100%;height:auto;display:block;background:#0b0e12;border-radius:12px;touch-action:none;}
+.hud{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap;}
+.btn{border:1px solid #2a2f3c;background:#161a23;color:var(--ink);padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;}
+.btn.primary{background:linear-gradient(180deg,#1a232c,#151a22);border-color:#2d3645;box-shadow:0 0 0 1px rgba(255,255,255,.02), inset 0 -8px 18px rgba(0,0,0,.5);}
+.btn:active{transform:translateY(1px)}
+#status{margin-left:auto;color:var(--muted);font-size:14px}
+.help{margin-top:16px;color:var(--muted)}
+.help summary{color:var(--ink);cursor:pointer}
+dialog{border:none;border-radius:16px;padding:22px;background:#10141b;color:var(--ink);max-width:520px;width:min(92vw,520px);box-shadow:0 20px 80px rgba(0,0,0,.6);}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+.code-line{margin:8px 0 6px;color:var(--muted)}
+.code-box{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;letter-spacing:1.2px;background:#0b0f15;border:1px solid #1e2631;padding:12px 14px;border-radius:10px;font-weight:800;font-size:18px;}
+.dlg-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:14px}
