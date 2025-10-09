@@ -271,3 +271,14 @@
   ro.observe(canvas);
   resizeCanvas();
 })();
+
+// === Start overlay handler (non-fading) ===
+(function(){
+  var overlay = document.getElementById('startOverlay');
+  var btn = document.getElementById('startBtn');
+  if(overlay && btn){
+    btn.addEventListener('click', function(){
+      overlay.style.display = 'none';
+    });
+  }
+})();
